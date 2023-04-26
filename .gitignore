@@ -10,6 +10,7 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /Projects/
+/Assets/MazeGenerator/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -73,3 +74,4 @@ crashlytics-build.properties
 *.log
 *.log
 HW1-Movement/Library/StateCache/MainStageHierarchy/05/05aac79fa41c848e49317a9edd317502.json
+Assets/MazeGenerator.meta
