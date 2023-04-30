@@ -10,7 +10,13 @@ public class MazeController : MonoBehaviour
     private PlayerInputActions playerInputActions;
     public Transform target;
 
+    //Rotation Limitations
     float rotationSpeed = 10;
+    float maxRotX = 30f;
+    float minRotX = -30f;
+    float maxRotZ = 30f;
+    float minRotZ = -30f;
+
     Vector3 currentEulerAngles;
     Quaternion currentRotation;
 
@@ -37,7 +43,22 @@ public class MazeController : MonoBehaviour
         //apply the Quaternion.eulerAngles change to the gameObject
         transform.rotation = currentRotation;
 
+        LimitRotation();
 
     }
+
+    private void LimitRotation()
+    {
+        Vector3 mazeEulerAngle = transform.rotation.eulerAngles;
+
+        mazeEulerAngle.x = (mazeEulerAngle.x > 180) ? mazeEulerAngle.x - 360 : mazeEulerAngle.x;
+        mazeEulerAngle.x = Mathf.Clamp(mazeEulerAngle.x, minRotX, maxRotX);
+
+        mazeEulerAngle.z = (mazeEulerAngle.z > 180) ? mazeEulerAngle.z - 360 : mazeEulerAngle.z;
+        mazeEulerAngle.z = Mathf.Clamp(mazeEulerAngle.z, minRotZ, maxRotZ);
+
+        transform.rotation = Quaternion.Euler(mazeEulerAngle);
+
+    }    
 
 }
