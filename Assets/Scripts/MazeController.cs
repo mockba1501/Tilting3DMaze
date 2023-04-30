@@ -2,42 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class MazeController : MonoBehaviour
 {
-    private Rigidbody mazeRigidBody;
+   
+    private PlayerInputActions playerInputActions;
+    public Transform target;
 
+    float rotationSpeed = 10;
+    Vector3 currentEulerAngles;
+    Quaternion currentRotation;
 
     private void Awake()
     {
-        mazeRigidBody = GetComponent<Rigidbody>();
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.Maze.Enable();
     }
-    public void TiltRight() 
+    
+    private void FixedUpdate()
     {
-        Debug.Log("Tilting Right Side");
+        //Using the new Input System
+        Vector2 inputVector = playerInputActions.Maze.Tilting.ReadValue<Vector2>();
+
+        //Adjusting arrow key values
+        Vector3 relativeRotation = new Vector3(inputVector.y, 0, -inputVector.x);
+
+        //Updating EulerAngles
+        currentEulerAngles += relativeRotation * Time.deltaTime * rotationSpeed;
+
+        //moving the value of the Vector3 into Quanternion.eulerAngle format
+        currentRotation.eulerAngles = currentEulerAngles;
+
+        //apply the Quaternion.eulerAngles change to the gameObject
+        transform.rotation = currentRotation;
+
+
     }
 
-    public void Tilting(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log("Tilting " + context);
-            
-            Vector2 inputVector = context.ReadValue<Vector2>();
-            float speed = 5f;
-            mazeRigidBody.AddForce(new Vector3(inputVector.x,0,inputVector.y) * speed, ForceMode.Impulse);
-        }
-    }
-
-        // Start is called before the first frame update
-        void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
